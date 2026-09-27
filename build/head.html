@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#f2a56f">
+<title>Stillwater — a gondola drift</title>
+<style>
+  html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#f2a56f;
+    touch-action:none; -webkit-user-select:none; user-select:none; overscroll-behavior:none; }
+  #wrap { position:fixed; inset:0; }
+  #c { width:100%; height:100%; display:block; image-rendering:pixelated; image-rendering:crisp-edges; }
+  .zone { position:absolute; bottom:6vh; width:22vmin; height:22vmin; border-radius:50%;
+    border:2px solid rgba(255,240,220,.35); background:radial-gradient(circle, rgba(255,220,170,.18) 0%, rgba(255,220,170,0) 70%);
+    pointer-events:none; transition:transform .12s ease-out, background .12s; }
+  #zoneL { left:6vw; } #zoneR { right:6vw; }
+  .zone.hit { transform:scale(1.25); background:radial-gradient(circle, rgba(255,235,200,.5) 0%, rgba(255,220,170,0) 70%); }
+  .zone .lbl { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:rgba(255,245,230,.75); font:600 5vmin/1 Georgia, serif; text-shadow:0 0 12px rgba(255,180,120,.8); }
+  #hint { position:absolute; left:0; right:0; bottom:max(10px, env(safe-area-inset-bottom)); text-align:center;
+    color:rgba(80,40,25,.62); font:13px/1.4 Georgia, serif; letter-spacing:.06em; pointer-events:none;
+    text-shadow:0 1px 0 rgba(255,235,210,.5); }
+  #title { position:absolute; top:max(12px, env(safe-area-inset-top)); left:0; right:0; text-align:center;
+    color:rgba(255,248,238,.9); font:italic 600 26px Georgia, serif; letter-spacing:.28em; pointer-events:none;
+    text-shadow:0 0 18px rgba(255,170,110,.9), 0 2px 6px rgba(120,50,20,.35); opacity:.92; }
+  #fade { position:absolute; inset:0; background:#f7c489; pointer-events:none; transition:opacity 2.5s ease; }
+  #muteBtn { position:absolute; top:max(12px, env(safe-area-inset-top)); right:14px; width:44px; height:44px;
+    border-radius:50%; border:1px solid rgba(255,240,220,.4); background:rgba(120,60,30,.25);
+    color:rgba(255,248,238,.9); font-size:20px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; -webkit-tap-highlight-color:transparent; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+  <div class="zone" id="zoneL"><div class="lbl">~</div></div>
+  <div class="zone" id="zoneR"><div class="lbl">~</div></div>
+  <div id="title">S T I L L W A T E R</div>
+  <div id="muteBtn" title="music on/off">🔊</div>
+  <div id="hint">tap left / tap right to pole &nbsp;·&nbsp; drift, don't rush &nbsp;·&nbsp; v2026.09.26f</div>
+  <div id="fade"></div>
+</div>
+<script>
